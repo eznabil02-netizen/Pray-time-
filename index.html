@@ -3,170 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horaires de Prière - Salé (Ramadan 1447)</title>
+    <title>Horaires Prière - Salé (Ramadan & Chouwal)</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .app-container { background: white; width: 100%; max-width: 400px; padding: 25px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-top: 6px solid #146c2e; }
-        h1 { color: #146c2e; font-size: 20px; text-align: center; margin: 0 0 5px 0; }
-        .location { text-align: center; font-size: 14px; color: #888; margin-bottom: 20px; }
-        .date-container { text-align: center; font-size: 17px; font-weight: 600; color: #222; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
-        .countdown-container { text-align: center; background: linear-gradient(135deg, #146c2e, #1e8f3f); padding: 25px 20px; border-radius: 16px; margin-bottom: 25px; color: white; box-shadow: 0 4px 15px rgba(20, 108, 46, 0.2); }
-        .countdown-label { font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.9; margin-bottom: 5px; }
-        .countdown-time { font-size: 42px; font-weight: 800; margin: 5px 0; font-variant-numeric: tabular-nums; letter-spacing: 1px; }
-        .prayer-list { list-style: none; padding: 0; margin: 0; }
-        .prayer-item { display: flex; justify-content: space-between; padding: 16px 15px; border-radius: 12px; margin-bottom: 5px; font-size: 17px; font-weight: 500; transition: background 0.2s; }
-        .active { background-color: #e8f5e9; color: #146c2e; font-weight: 700; border-left: 4px solid #146c2e; }
-        .shuruq { color: #f57c00; font-size: 15px; opacity: 0.8; }
-        .message { text-align: center; color: #666; font-style: italic; padding: 20px; }
+        body { font-family: -apple-system, sans-serif; background-color: #f0f4f8; color: #2d3436; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .app-container { background: white; width: 100%; max-width: 400px; padding: 25px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); border-top: 8px solid #0984e3; text-align: center; }
+        h1 { color: #0984e3; font-size: 22px; margin: 0; }
+        .month-label { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 14px; font-weight: bold; margin-top: 5px; background: #dfe6e9; }
+        .location { font-size: 14px; color: #636e72; margin-bottom: 15px; }
+        .btn-notif { background: #0984e3; color: white; border: none; padding: 12px; border-radius: 15px; cursor: pointer; font-weight: bold; margin-bottom: 20px; width: 100%; transition: 0.3s; }
+        .btn-notif.active { background: #b2bec3; }
+        .countdown-container { background: linear-gradient(135deg, #0984e3, #00cec9); padding: 20px; border-radius: 20px; margin-bottom: 20px; color: white; }
+        .countdown-time { font-size: 42px; font-weight: 800; }
+        .prayer-list { list-style: none; padding: 0; margin: 0; text-align: left; }
+        .prayer-item { display: flex; justify-content: space-between; padding: 14px; border-radius: 12px; margin-bottom: 6px; border: 1px solid #f1f2f6; }
+        .active { background-color: #e1f5fe; color: #0984e3; font-weight: bold; border: 1px solid #0984e3; }
     </style>
 </head>
 <body>
-
     <div class="app-container">
-        <h1>🌙 Ramadan 1447</h1>
+        <h1 id="month-title">Chargement...</h1>
+        <div id="month-badge" class="month-label"></div>
         <div class="location">Rabat - Salé (GMT)</div>
         
-        <div class="date-container" id="display-date">Chargement de la date...</div>
+        <button id="btnNotif" class="btn-notif" onclick="enableNotifications()">🔔 Activer les Alertes Adhan</button>
+
+        <div id="display-date" style="font-weight: bold; margin-bottom: 15px;"></div>
         
         <div class="countdown-container">
-            <div class="countdown-label" id="countdown-label">Prochaine prière : <span id="next-prayer-name">...</span></div>
-            <div class="countdown-time" id="countdown">--:--:--</div>
+            <div id="next-prayer-name">Prochaine prière</div>
+            <div class="countdown-time" id="countdown">00:00:00</div>
         </div>
 
-        <ul class="prayer-list" id="prayer-list">
-            </ul>
+        <ul class="prayer-list" id="prayer-list"></ul>
     </div>
 
     <script>
-        // Base de données complète extraite de votre image (Ramadan 1447 - Fév/Mars 2026)
         const prayerData = {
-            "2026-02-19": { "Sobh": "05:39", "Chourouq": "07:05", "Dohr": "12:46", "Asr": "15:50", "Maghrib": "18:19", "Icha": "19:34" },
-            "2026-02-20": { "Sobh": "05:38", "Chourouq": "07:04", "Dohr": "12:46", "Asr": "15:50", "Maghrib": "18:20", "Icha": "19:35" },
-            "2026-02-21": { "Sobh": "05:37", "Chourouq": "07:03", "Dohr": "12:46", "Asr": "15:51", "Maghrib": "18:21", "Icha": "19:35" },
-            "2026-02-22": { "Sobh": "05:36", "Chourouq": "07:02", "Dohr": "12:46", "Asr": "15:51", "Maghrib": "18:22", "Icha": "19:36" },
-            "2026-02-23": { "Sobh": "05:35", "Chourouq": "07:00", "Dohr": "12:46", "Asr": "15:52", "Maghrib": "18:22", "Icha": "19:37" },
-            "2026-02-24": { "Sobh": "05:34", "Chourouq": "06:59", "Dohr": "12:46", "Asr": "15:53", "Maghrib": "18:23", "Icha": "19:38" },
-            "2026-02-25": { "Sobh": "05:33", "Chourouq": "06:58", "Dohr": "12:45", "Asr": "15:53", "Maghrib": "18:24", "Icha": "19:39" },
-            "2026-02-26": { "Sobh": "05:31", "Chourouq": "06:57", "Dohr": "12:45", "Asr": "15:54", "Maghrib": "18:25", "Icha": "19:40" },
-            "2026-02-27": { "Sobh": "05:30", "Chourouq": "06:56", "Dohr": "12:45", "Asr": "15:54", "Maghrib": "18:26", "Icha": "19:40" },
-            "2026-02-28": { "Sobh": "05:29", "Chourouq": "06:55", "Dohr": "12:45", "Asr": "15:55", "Maghrib": "18:27", "Icha": "19:41" },
-            "2026-03-01": { "Sobh": "05:28", "Chourouq": "06:53", "Dohr": "12:45", "Asr": "15:55", "Maghrib": "18:28", "Icha": "19:42" },
-            "2026-03-02": { "Sobh": "05:27", "Chourouq": "06:52", "Dohr": "12:45", "Asr": "15:56", "Maghrib": "18:28", "Icha": "19:43" },
-            "2026-03-03": { "Sobh": "05:25", "Chourouq": "06:51", "Dohr": "12:44", "Asr": "15:56", "Maghrib": "18:29", "Icha": "19:44" },
-            "2026-03-04": { "Sobh": "05:24", "Chourouq": "06:50", "Dohr": "12:44", "Asr": "15:57", "Maghrib": "18:30", "Icha": "19:44" },
-            "2026-03-05": { "Sobh": "05:23", "Chourouq": "06:48", "Dohr": "12:44", "Asr": "15:57", "Maghrib": "18:31", "Icha": "19:45" },
-            "2026-03-06": { "Sobh": "05:22", "Chourouq": "06:47", "Dohr": "12:44", "Asr": "15:57", "Maghrib": "18:32", "Icha": "19:46" },
-            "2026-03-07": { "Sobh": "05:20", "Chourouq": "06:46", "Dohr": "12:43", "Asr": "15:58", "Maghrib": "18:33", "Icha": "19:47" },
-            "2026-03-08": { "Sobh": "05:19", "Chourouq": "06:44", "Dohr": "12:43", "Asr": "15:58", "Maghrib": "18:33", "Icha": "19:48" },
-            "2026-03-09": { "Sobh": "05:18", "Chourouq": "06:43", "Dohr": "12:43", "Asr": "15:59", "Maghrib": "18:34", "Icha": "19:48" },
-            "2026-03-10": { "Sobh": "05:16", "Chourouq": "06:42", "Dohr": "12:43", "Asr": "15:59", "Maghrib": "18:35", "Icha": "19:49" },
-            "2026-03-11": { "Sobh": "05:15", "Chourouq": "06:40", "Dohr": "12:42", "Asr": "15:59", "Maghrib": "18:36", "Icha": "19:50" },
-            "2026-03-12": { "Sobh": "05:14", "Chourouq": "06:39", "Dohr": "12:42", "Asr": "16:00", "Maghrib": "18:37", "Icha": "19:51" },
-            "2026-03-13": { "Sobh": "05:12", "Chourouq": "06:38", "Dohr": "12:42", "Asr": "16:00", "Maghrib": "18:37", "Icha": "19:52" },
-            "2026-03-14": { "Sobh": "05:11", "Chourouq": "06:36", "Dohr": "12:42", "Asr": "16:00", "Maghrib": "18:38", "Icha": "19:53" },
-            "2026-03-15": { "Sobh": "05:10", "Chourouq": "06:35", "Dohr": "12:41", "Asr": "16:01", "Maghrib": "18:39", "Icha": "19:53" },
-            "2026-03-16": { "Sobh": "05:08", "Chourouq": "06:34", "Dohr": "12:41", "Asr": "16:01", "Maghrib": "18:40", "Icha": "19:54" },
-            "2026-03-17": { "Sobh": "05:07", "Chourouq": "06:32", "Dohr": "12:41", "Asr": "16:01", "Maghrib": "18:41", "Icha": "19:55" },
-            "2026-03-18": { "Sobh": "05:05", "Chourouq": "06:31", "Dohr": "12:40", "Asr": "16:02", "Maghrib": "18:41", "Icha": "19:56" },
-            "2026-03-19": { "Sobh": "05:04", "Chourouq": "06:30", "Dohr": "12:40", "Asr": "16:02", "Maghrib": "18:42", "Icha": "19:57" },
-            "2026-03-20": { "Sobh": "05:02", "Chourouq": "06:28", "Dohr": "12:40", "Asr": "16:02", "Maghrib": "18:43", "Icha": "19:58" }
+            // Fin du mois de Ramadan 1447
+            "2026-03-18": { "m": "Ramadan", "Sobh": "05:05", "Chourouq": "06:31", "Dohr": "12:40", "Asr": "16:02", "Maghrib": "18:41", "Icha": "19:56" },
+            "2026-03-19": { "m": "Ramadan", "Sobh": "05:04", "Chourouq": "06:30", "Dohr": "12:40", "Asr": "16:02", "Maghrib": "18:42", "Icha": "19:57" },
+            "2026-03-20": { "m": "Ramadan", "Sobh": "05:02", "Chourouq": "06:28", "Dohr": "12:40", "Asr": "16:02", "Maghrib": "18:43", "Icha": "19:58" },
+            // Mois de Chouwal 1447 (Début 20 mars selon document Chouwal)
+            "2026-03-21": { "m": "Chouwal", "Sobh": "05:01", "Chourouq": "06:27", "Dohr": "12:40", "Asr": "16:03", "Maghrib": "18:44", "Icha": "19:58" },
+            "2026-03-22": { "m": "Chouwal", "Sobh": "04:59", "Chourouq": "06:26", "Dohr": "13:39", "Asr": "17:03", "Maghrib": "19:44", "Icha": "20:59" },
+            "2026-03-23": { "m": "Chouwal", "Sobh": "04:58", "Chourouq": "06:24", "Dohr": "13:39", "Asr": "17:03", "Maghrib": "19:45", "Icha": "21:00" },
+            "2026-03-24": { "m": "Chouwal", "Sobh": "04:57", "Chourouq": "06:23", "Dohr": "13:39", "Asr": "17:03", "Maghrib": "19:46", "Icha": "21:01" },
+            "2026-03-25": { "m": "Chouwal", "Sobh": "04:55", "Chourouq": "06:22", "Dohr": "13:38", "Asr": "17:03", "Maghrib": "19:47", "Icha": "21:02" },
+            "2026-03-26": { "m": "Chouwal", "Sobh": "04:54", "Chourouq": "06:20", "Dohr": "13:38", "Asr": "17:04", "Maghrib": "19:47", "Icha": "21:03" },
+            "2026-03-27": { "m": "Chouwal", "Sobh": "04:52", "Chourouq": "06:19", "Dohr": "13:38", "Asr": "17:04", "Maghrib": "19:48", "Icha": "21:04" },
+            "2026-03-28": { "m": "Chouwal", "Sobh": "04:51", "Chourouq": "06:17", "Dohr": "13:37", "Asr": "17:04", "Maghrib": "19:49", "Icha": "21:05" },
+            "2026-03-29": { "m": "Chouwal", "Sobh": "04:49", "Chourouq": "06:16", "Dohr": "13:37", "Asr": "17:04", "Maghrib": "19:50", "Icha": "21:05" },
+            "2026-03-30": { "m": "Chouwal", "Sobh": "04:48", "Chourouq": "06:15", "Dohr": "13:37", "Asr": "17:04", "Maghrib": "19:50", "Icha": "21:06" },
+            "2026-03-31": { "m": "Chouwal", "Sobh": "04:46", "Chourouq": "06:13", "Dohr": "13:37", "Asr": "17:05", "Maghrib": "19:51", "Icha": "21:07" },
+            "2026-04-01": { "m": "Chouwal", "Sobh": "04:44", "Chourouq": "06:12", "Dohr": "13:36", "Asr": "17:05", "Maghrib": "19:52", "Icha": "21:08" },
+            "2026-04-02": { "m": "Chouwal", "Sobh": "04:43", "Chourouq": "06:11", "Dohr": "13:36", "Asr": "17:05", "Maghrib": "19:53", "Icha": "21:09" },
+            "2026-04-03": { "m": "Chouwal", "Sobh": "04:41", "Chourouq": "06:09", "Dohr": "13:36", "Asr": "17:05", "Maghrib": "19:53", "Icha": "21:10" }
         };
 
-        function formatDateKey(dateObj) {
-            const y = dateObj.getFullYear();
-            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
-            const d = String(dateObj.getDate()).padStart(2, '0');
-            return `${y}-${m}-${d}`;
+        let notifEnabled = false;
+
+        function enableNotifications() {
+            Notification.requestPermission().then(p => {
+                if (p === "granted") {
+                    notifEnabled = true;
+                    document.getElementById('btnNotif').innerText = "🔔 Alertes Activées";
+                    document.getElementById('btnNotif').classList.add('active');
+                    new Audio('https://www.islamcan.com/audio/adhan/azan1.mp3').play();
+                }
+            });
         }
 
-        function getPrayerDateObject(dateObj, timeString) {
-            const [hours, minutes] = timeString.split(':');
-            const prayerDate = new Date(dateObj);
-            prayerDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-            return prayerDate;
-        }
-
-        function updateApp() {
+        function update() {
             const now = new Date();
-            const todayKey = formatDateKey(now);
-            const todayData = prayerData[todayKey];
+            const dateKey = now.toISOString().split('T')[0];
+            const data = prayerData[dateKey];
+            if(!data) return;
 
-            const listEl = document.getElementById('prayer-list');
-            
-            // Si on est en dehors du mois de Ramadan 1447 (avant ou après)
-            if (!todayData) {
-                document.getElementById('display-date').innerText = now.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                document.getElementById('countdown-label').innerText = "Hors période";
-                document.getElementById('countdown').innerText = "--:--:--";
-                listEl.innerHTML = '<div class="message">Les horaires de Ramadan 1447 ne sont pas disponibles pour cette date.</div>';
-                return;
-            }
+            document.getElementById('month-title').innerText = data.m === "Ramadan" ? "🌙 Ramadan 1447" : "🌟 Chouwal 1447";
+            document.getElementById('month-badge').innerText = data.m;
+            document.getElementById('display-date').innerText = now.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'});
 
-            // Affichage de la date en français
-            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-            // Mettre la première lettre en majuscule
-            let dateStr = now.toLocaleDateString('fr-FR', options);
-            document.getElementById('display-date').innerText = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+            let nextP = null, nextT = null;
+            const list = document.getElementById('prayer-list');
+            list.innerHTML = '';
 
-            let nextPrayer = null;
-            let nextPrayerTime = null;
+            for (const [name, time] of Object.entries(data)) {
+                if (name === "m") continue;
+                const [h, m] = time.split(':');
+                const pTime = new Date(); pTime.setHours(h, m, 0);
 
-            // Déterminer la prochaine prière
-            for (const [name, time] of Object.entries(todayData)) {
-                if (name === "Chourouq") continue; // On ne compte pas le Chourouq comme une prière attendue
-
-                const prayerTimeObj = getPrayerDateObject(now, time);
-                if (prayerTimeObj > now) {
-                    nextPrayer = name;
-                    nextPrayerTime = prayerTimeObj;
-                    break; // On a trouvé la prochaine, on s'arrête
+                if (!nextP && pTime > now && name !== "Chourouq") { 
+                    nextP = name; nextT = pTime; 
                 }
-            }
 
-            // Si toutes les prières d'aujourd'hui sont passées (après l'Icha)
-            if (!nextPrayer) {
-                const tomorrow = new Date(now);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                const tomorrowKey = formatDateKey(tomorrow);
-                
-                if (prayerData[tomorrowKey]) {
-                    nextPrayer = "Sobh (Demain)";
-                    nextPrayerTime = getPrayerDateObject(tomorrow, prayerData[tomorrowKey]["Sobh"]);
+                if (notifEnabled && name !== "Chourouq" && now.getHours() == h && now.getMinutes() == m && now.getSeconds() == 0) {
+                    new Notification("C'est l'heure de " + name);
+                    new Audio('https://www.islamcan.com/audio/adhan/azan1.mp3').play();
                 }
-            }
 
-            // Mise à jour de la liste des prières du jour
-            listEl.innerHTML = '';
-            for (const [name, time] of Object.entries(todayData)) {
                 const li = document.createElement('li');
-                li.className = 'prayer-item';
-                
-                // Mettre en surbrillance la prochaine prière
-                if (nextPrayer === name) li.classList.add('active');
-                if (name === "Chourouq") li.classList.add('shuruq');
-                
+                li.className = 'prayer-item ' + (nextP === name ? 'active' : '');
                 li.innerHTML = `<span>${name}</span><span>${time}</span>`;
-                listEl.appendChild(li);
+                list.appendChild(li);
             }
 
-            // Mise à jour du compte à rebours
-            if (nextPrayerTime) {
-                document.getElementById('next-prayer-name').innerText = nextPrayer;
-                const diff = nextPrayerTime - now;
-                
-                const h = Math.floor((diff / (1000 * 60 * 60)) % 24).toString().padStart(2, '0');
-                const m = Math.floor((diff / 1000 / 60) % 60).toString().padStart(2, '0');
-                const s = Math.floor((diff / 1000) % 60).toString().padStart(2, '0');
-                
-                document.getElementById('countdown').innerText = `${h}:${m}:${s}`;
-            } else {
-                document.getElementById('countdown-label').innerText = "Ramadan terminé";
-                document.getElementById('countdown').innerText = "00:00:00";
+            if (nextT) {
+                document.getElementById('next-prayer-name').innerText = "Prochaine : " + nextP;
+                const diff = nextT - now;
+                const hh = Math.floor(diff/3600000).toString().padStart(2,'0');
+                const mm = Math.floor((diff%3600000)/60000).toString().padStart(2,'0');
+                const ss = Math.floor((diff%60000)/1000).toString().padStart(2,'0');
+                document.getElementById('countdown').innerText = `${hh}:${mm}:${ss}`;
             }
         }
-
-        setInterval(updateApp, 1000);
-        updateApp(); 
+        setInterval(update, 1000); update();
     </script>
 </body>
 </html>
