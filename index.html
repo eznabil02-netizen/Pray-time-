@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horaires de Prière - Salé (Chouwal)</title>
+    <title>Horaires Prière Salé - Chouwal</title>
     <style>
         body { font-family: -apple-system, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .app-container { background: white; width: 100%; max-width: 400px; padding: 25px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-top: 6px solid #146c2e; text-align: center; }
@@ -20,31 +20,47 @@
     <div class="app-container">
         <h1 id="hijri-title">🌟 Chouwal 1447</h1>
         <div class="location">Rabat - Salé (GMT+1)</div>
-
         <div id="display-date" style="font-weight: bold; margin-bottom: 15px;"></div>
-        
         <div class="countdown-container">
             <div id="next-prayer-name">Chargement...</div>
             <div class="countdown-time" id="countdown">00:00:00</div>
         </div>
-
         <ul class="prayer-list" id="prayer-list"></ul>
     </div>
 
     <script>
         const prayerData = {
-            "2026-03-24": { "h": 5, "Sobh": "05:57", "Chourouq": "07:23", "Dohr": "13:39", "Asr": "17:03", "Maghrib": "19:46", "Icha": "21:01" },
-            "2026-03-25": { "h": 6, "Sobh": "05:55", "Chourouq": "07:22", "Dohr": "13:38", "Asr": "17:03", "Maghrib": "19:47", "Icha": "21:02" },
-            "2026-03-26": { "h": 7, "Sobh": "05:54", "Chourouq": "07:20", "Dohr": "13:38", "Asr": "17:04", "Maghrib": "19:47", "Icha": "21:03" },
-            "2026-03-27": { "h": 8, "Sobh": "05:52", "Chourouq": "07:19", "Dohr": "13:38", "Asr": "17:04", "Maghrib": "19:48", "Icha": "21:04" },
-            "2026-03-28": { "h": 9, "Sobh": "05:51", "Chourouq": "07:17", "Dohr": "13:37", "Asr": "17:04", "Maghrib": "19:49", "Icha": "21:05" }
+            "2026-03-29": { "h": 10, "Sobh": "05:49", "Chourouq": "07:16", "Dohr": "13:37", "Asr": "17:04", "Maghrib": "19:50", "Icha": "21:05" },
+            "2026-03-30": { "h": 11, "Sobh": "05:48", "Chourouq": "07:15", "Dohr": "13:37", "Asr": "17:04", "Maghrib": "19:50", "Icha": "21:06" },
+            "2026-03-31": { "h": 12, "Sobh": "05:46", "Chourouq": "07:13", "Dohr": "13:37", "Asr": "17:05", "Maghrib": "19:51", "Icha": "21:07" },
+            "2026-04-01": { "h": 13, "Sobh": "05:44", "Chourouq": "07:12", "Dohr": "13:36", "Asr": "17:05", "Maghrib": "19:52", "Icha": "21:08" },
+            "2026-04-02": { "h": 14, "Sobh": "05:43", "Chourouq": "07:11", "Dohr": "13:36", "Asr": "17:05", "Maghrib": "19:53", "Icha": "21:09" },
+            "2026-04-03": { "h": 15, "Sobh": "05:41", "Chourouq": "07:09", "Dohr": "13:36", "Asr": "17:05", "Maghrib": "19:53", "Icha": "21:10" },
+            "2026-04-04": { "h": 16, "Sobh": "05:40", "Chourouq": "07:08", "Dohr": "13:35", "Asr": "17:05", "Maghrib": "19:54", "Icha": "21:11" },
+            "2026-04-05": { "h": 17, "Sobh": "05:38", "Chourouq": "07:07", "Dohr": "13:35", "Asr": "17:05", "Maghrib": "19:55", "Icha": "21:12" },
+            "2026-04-06": { "h": 18, "Sobh": "05:37", "Chourouq": "07:05", "Dohr": "13:35", "Asr": "17:05", "Maghrib": "19:56", "Icha": "21:13" },
+            "2026-04-07": { "h": 19, "Sobh": "05:35", "Chourouq": "07:04", "Dohr": "13:35", "Asr": "17:06", "Maghrib": "19:57", "Icha": "21:14" },
+            "2026-04-08": { "h": 20, "Sobh": "05:34", "Chourouq": "07:03", "Dohr": "13:34", "Asr": "17:06", "Maghrib": "19:57", "Icha": "21:15" },
+            "2026-04-09": { "h": 21, "Sobh": "05:32", "Chourouq": "07:01", "Dohr": "13:34", "Asr": "17:06", "Maghrib": "19:58", "Icha": "21:16" },
+            "2026-04-10": { "h": 22, "Sobh": "05:31", "Chourouq": "07:00", "Dohr": "13:34", "Asr": "17:06", "Maghrib": "19:59", "Icha": "21:16" },
+            "2026-04-11": { "h": 23, "Sobh": "05:29", "Chourouq": "06:59", "Dohr": "13:33", "Asr": "17:06", "Maghrib": "20:00", "Icha": "21:17" },
+            "2026-04-12": { "h": 24, "Sobh": "05:28", "Chourouq": "06:57", "Dohr": "13:33", "Asr": "17:06", "Maghrib": "20:00", "Icha": "21:18" },
+            "2026-04-13": { "h": 25, "Sobh": "05:26", "Chourouq": "06:56", "Dohr": "13:33", "Asr": "17:06", "Maghrib": "20:01", "Icha": "21:19" },
+            "2026-04-14": { "h": 26, "Sobh": "05:25", "Chourouq": "06:55", "Dohr": "13:33", "Asr": "17:06", "Maghrib": "20:02", "Icha": "21:20" },
+            "2026-04-15": { "h": 27, "Sobh": "05:23", "Chourouq": "06:54", "Dohr": "13:32", "Asr": "17:06", "Maghrib": "20:03", "Icha": "21:21" },
+            "2026-04-16": { "h": 28, "Sobh": "05:22", "Chourouq": "06:52", "Dohr": "13:32", "Asr": "17:06", "Maghrib": "20:03", "Icha": "21:22" },
+            "2026-04-17": { "h": 29, "Sobh": "05:20", "Chourouq": "06:51", "Dohr": "13:32", "Asr": "17:06", "Maghrib": "20:04", "Icha": "21:23" },
+            "2026-04-18": { "h": 30, "Sobh": "05:19", "Chourouq": "06:50", "Dohr": "13:32", "Asr": "17:07", "Maghrib": "20:05", "Icha": "21:24" }
         };
 
         function update() {
             const now = new Date();
             const dateKey = now.toISOString().split('T')[0];
             const data = prayerData[dateKey];
-            if(!data) return;
+            if(!data) {
+                document.getElementById('next-prayer-name').innerText = "Fin des données";
+                return;
+            }
 
             document.getElementById('hijri-title').innerText = "🌟 " + data.h + " Chouwal 1447";
             document.getElementById('display-date').innerText = now.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'});
@@ -54,15 +70,12 @@
             list.innerHTML = '';
 
             const prayers = ["Sobh", "Chourouq", "Dohr", "Asr", "Maghrib", "Icha"];
-
             for (const name of prayers) {
                 const time = data[name];
                 const [h, m] = time.split(':');
                 const pTime = new Date(); pTime.setHours(h, m, 0);
 
-                if (!nextP && pTime > now) { 
-                    nextP = name; nextT = pTime; 
-                }
+                if (!nextP && pTime > now) { nextP = name; nextT = pTime; }
 
                 const li = document.createElement('li');
                 li.className = 'prayer-item ' + (nextP === name ? 'active' : '');
