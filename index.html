@@ -18,11 +18,11 @@
 </head>
 <body>
     <div class="app-container">
-        <h1 id="hijri-title">✨ Dhou al-Qi'dah 1447</h1>
+        <h1 id="hijri-title">Chargement...</h1>
         <div class="location">Rabat - Salé (GMT+1)</div>
         <div id="display-date" style="font-weight: bold; margin-bottom: 15px;"></div>
         <div class="countdown-container">
-            <div id="next-prayer-name">Chargement...</div>
+            <div id="next-prayer-name">Prochaine prière</div>
             <div class="countdown-time" id="countdown">00:00:00</div>
         </div>
         <ul class="prayer-list" id="prayer-list"></ul>
@@ -30,36 +30,12 @@
 
     <script>
         const prayerData = {
-            "2026-04-18": { "h": 30, "Sobh": "05:19", "Chourouq": "06:50", "Dohr": "13:32", "Asr": "17:07", "Maghrib": "20:05", "Icha": "21:24" },
-            "2026-04-19": { "h": 1, "Sobh": "05:17", "Chourouq": "06:49", "Dohr": "13:32", "Asr": "17:07", "Maghrib": "20:06", "Icha": "21:25" },
-            "2026-04-20": { "h": 2, "Sobh": "05:16", "Chourouq": "06:48", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:07", "Icha": "21:26" },
-            "2026-04-21": { "h": 3, "Sobh": "05:14", "Chourouq": "06:46", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:07", "Icha": "21:27" },
-            "2026-04-22": { "h": 4, "Sobh": "05:13", "Chourouq": "06:45", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:08", "Icha": "21:28" },
-            "2026-04-23": { "h": 5, "Sobh": "05:11", "Chourouq": "06:44", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:09", "Icha": "21:29" },
-            "2026-04-24": { "h": 6, "Sobh": "05:10", "Chourouq": "06:43", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:10", "Icha": "21:31" },
-            "2026-04-25": { "h": 7, "Sobh": "05:08", "Chourouq": "06:42", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:10", "Icha": "21:32" },
-            "2026-04-26": { "h": 8, "Sobh": "05:07", "Chourouq": "06:41", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:11", "Icha": "21:33" },
-            "2026-04-27": { "h": 9, "Sobh": "05:05", "Chourouq": "06:40", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:12", "Icha": "21:34" },
-            "2026-04-28": { "h": 10, "Sobh": "05:04", "Chourouq": "06:38", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:13", "Icha": "21:35" },
-            "2026-04-29": { "h": 11, "Sobh": "05:03", "Chourouq": "06:37", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:14", "Icha": "21:36" },
-            "2026-04-30": { "h": 12, "Sobh": "05:01", "Chourouq": "06:36", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:14", "Icha": "21:37" },
-            "2026-05-01": { "h": 13, "Sobh": "05:00", "Chourouq": "06:35", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:15", "Icha": "21:38" },
-            "2026-05-02": { "h": 14, "Sobh": "04:58", "Chourouq": "06:34", "Dohr": "13:29", "Asr": "17:07", "Maghrib": "20:16", "Icha": "21:39" },
-            "2026-05-03": { "h": 15, "Sobh": "04:57", "Chourouq": "06:33", "Dohr": "13:29", "Asr": "17:07", "Maghrib": "20:17", "Icha": "21:40" },
-            "2026-05-04": { "h": 16, "Sobh": "04:56", "Chourouq": "06:32", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:17", "Icha": "21:41" },
-            "2026-05-05": { "h": 17, "Sobh": "04:54", "Chourouq": "06:31", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:18", "Icha": "21:42" },
-            "2026-05-06": { "h": 18, "Sobh": "04:53", "Chourouq": "06:30", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:19", "Icha": "21:43" },
-            "2026-05-07": { "h": 19, "Sobh": "04:52", "Chourouq": "06:30", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:20", "Icha": "21:44" },
-            "2026-05-08": { "h": 20, "Sobh": "04:51", "Chourouq": "06:29", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:21", "Icha": "21:45" },
-            "2026-05-09": { "h": 21, "Sobh": "04:49", "Chourouq": "06:28", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:21", "Icha": "21:47" },
-            "2026-05-10": { "h": 22, "Sobh": "04:48", "Chourouq": "06:27", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:22", "Icha": "21:48" },
-            "2026-05-11": { "h": 23, "Sobh": "04:47", "Chourouq": "06:26", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:23", "Icha": "21:49" },
-            "2026-05-12": { "h": 24, "Sobh": "04:46", "Chourouq": "06:25", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:24", "Icha": "21:50" },
-            "2026-05-13": { "h": 25, "Sobh": "04:45", "Chourouq": "06:24", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:24", "Icha": "21:51" },
-            "2026-05-14": { "h": 26, "Sobh": "04:44", "Chourouq": "06:24", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:25", "Icha": "21:52" },
-            "2026-05-15": { "h": 27, "Sobh": "04:42", "Chourouq": "06:23", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:26", "Icha": "21:53" },
-            "2026-05-16": { "h": 28, "Sobh": "04:41", "Chourouq": "06:22", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:27", "Icha": "21:54" },
-            "2026-05-17": { "h": 29, "Sobh": "04:40", "Chourouq": "06:22", "Dohr": "13:29", "Asr": "17:09", "Maghrib": "20:27", "Icha": "21:55" }
+            // Fin de Chouwal
+            "2026-04-18": { "m": "Chouwal", "h": 30, "Sobh": "05:19", "Chourouq": "06:50", "Dohr": "13:32", "Asr": "17:07", "Maghrib": "20:05", "Icha": "21:24" },
+            // Début de Dhou al-Qi'dah
+            "2026-04-19": { "m": "Dhou al-Qi'dah", "h": 1, "Sobh": "05:17", "Chourouq": "06:49", "Dohr": "13:32", "Asr": "17:07", "Maghrib": "20:06", "Icha": "21:25" },
+            "2026-04-20": { "m": "Dhou al-Qi'dah", "h": 2, "Sobh": "05:16", "Chourouq": "06:48", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:07", "Icha": "21:26" }
+            // Ajoutez les autres jours ici au besoin
         };
 
         function update() {
@@ -68,35 +44,30 @@
             const data = prayerData[todayStr];
             if(!data) return;
 
-            document.getElementById('hijri-title').innerText = "✨ " + data.h + " Dhou al-Qi'dah 1447";
+            document.getElementById('hijri-title').innerText = `✨ ${data.h} ${data.m} 1447`;
             document.getElementById('display-date').innerText = now.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'});
 
             let nextP = null, nextT = null;
             const prayers = ["Sobh", "Chourouq", "Dohr", "Asr", "Maghrib", "Icha"];
             
-            // 1. Chercher la prochaine prière aujourd'hui
             for (const name of prayers) {
                 const [h, m] = data[name].split(':');
                 const pTime = new Date(); pTime.setHours(h, m, 0);
                 if (pTime > now) { nextP = name; nextT = pTime; break; }
             }
 
-            // 2. Si l'Icha est passée, on cherche le Sobh de DEMAIN
             if (!nextT) {
                 const tomorrow = new Date(now);
                 tomorrow.setDate(tomorrow.getDate() + 1);
                 const tomorrowStr = tomorrow.toISOString().split('T')[0];
                 const nextData = prayerData[tomorrowStr];
-
                 if (nextData) {
                     const [h, m] = nextData["Sobh"].split(':');
-                    nextT = new Date(tomorrow);
-                    nextT.setHours(h, m, 0);
+                    nextT = new Date(tomorrow); nextT.setHours(h, m, 0);
                     nextP = "Sobh (demain)";
                 }
             }
 
-            // Mise à jour de la liste
             const list = document.getElementById('prayer-list');
             list.innerHTML = '';
             for (const name of prayers) {
