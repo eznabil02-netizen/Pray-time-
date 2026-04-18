@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horaires de Prière - Salé (Dhou al-Qi'dah)</title>
+    <title>Horaires de Prière - Salé</title>
     <style>
         body { font-family: -apple-system, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .app-container { background: white; width: 100%; max-width: 400px; padding: 25px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-top: 6px solid #2c3e50; text-align: center; }
@@ -30,6 +30,7 @@
 
     <script>
         const prayerData = {
+            "2026-04-18": { "h": 30, "Sobh": "05:19", "Chourouq": "06:50", "Dohr": "13:32", "Asr": "17:07", "Maghrib": "20:05", "Icha": "21:24" },
             "2026-04-19": { "h": 1, "Sobh": "05:17", "Chourouq": "06:49", "Dohr": "13:32", "Asr": "17:07", "Maghrib": "20:06", "Icha": "21:25" },
             "2026-04-20": { "h": 2, "Sobh": "05:16", "Chourouq": "06:48", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:07", "Icha": "21:26" },
             "2026-04-21": { "h": 3, "Sobh": "05:14", "Chourouq": "06:46", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:07", "Icha": "21:27" },
@@ -63,31 +64,45 @@
 
         function update() {
             const now = new Date();
-            const dateKey = now.toISOString().split('T')[0];
-            const data = prayerData[dateKey];
-            if(!data) {
-                document.getElementById('next-prayer-name').innerText = "Vérifiez vos données";
-                return;
-            }
+            const todayStr = now.toISOString().split('T')[0];
+            const data = prayerData[todayStr];
+            if(!data) return;
 
             document.getElementById('hijri-title').innerText = "✨ " + data.h + " Dhou al-Qi'dah 1447";
             document.getElementById('display-date').innerText = now.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'});
 
             let nextP = null, nextT = null;
+            const prayers = ["Sobh", "Chourouq", "Dohr", "Asr", "Maghrib", "Icha"];
+            
+            // 1. Chercher la prochaine prière aujourd'hui
+            for (const name of prayers) {
+                const [h, m] = data[name].split(':');
+                const pTime = new Date(); pTime.setHours(h, m, 0);
+                if (pTime > now) { nextP = name; nextT = pTime; break; }
+            }
+
+            // 2. Si l'Icha est passée, on cherche le Sobh de DEMAIN
+            if (!nextT) {
+                const tomorrow = new Date(now);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const tomorrowStr = tomorrow.toISOString().split('T')[0];
+                const nextData = prayerData[tomorrowStr];
+
+                if (nextData) {
+                    const [h, m] = nextData["Sobh"].split(':');
+                    nextT = new Date(tomorrow);
+                    nextT.setHours(h, m, 0);
+                    nextP = "Sobh (demain)";
+                }
+            }
+
+            // Mise à jour de la liste
             const list = document.getElementById('prayer-list');
             list.innerHTML = '';
-
-            const prayers = ["Sobh", "Chourouq", "Dohr", "Asr", "Maghrib", "Icha"];
             for (const name of prayers) {
-                const time = data[name];
-                const [h, m] = time.split(':');
-                const pTime = new Date(); pTime.setHours(h, m, 0);
-
-                if (!nextP && pTime > now) { nextP = name; nextT = pTime; }
-
                 const li = document.createElement('li');
                 li.className = 'prayer-item ' + (nextP === name ? 'active' : '');
-                li.innerHTML = `<span>${name}</span><span>${time}</span>`;
+                li.innerHTML = `<span>${name}</span><span>${data[name]}</span>`;
                 list.appendChild(li);
             }
 
