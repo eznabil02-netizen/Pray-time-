@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horaires Prière Salé - Chouwal</title>
+    <title>Horaires de Prière - Salé (Dhou al-Qi'dah)</title>
     <style>
         body { font-family: -apple-system, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 15px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .app-container { background: white; width: 100%; max-width: 400px; padding: 25px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-top: 6px solid #146c2e; text-align: center; }
-        h1 { color: #146c2e; font-size: 20px; margin: 0; }
+        .app-container { background: white; width: 100%; max-width: 400px; padding: 25px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-top: 6px solid #2c3e50; text-align: center; }
+        h1 { color: #2c3e50; font-size: 20px; margin: 0; }
         .location { font-size: 14px; color: #888; margin-bottom: 15px; }
-        .countdown-container { background: linear-gradient(135deg, #146c2e, #1e8f3f); padding: 20px; border-radius: 16px; margin-bottom: 20px; color: white; }
+        .countdown-container { background: linear-gradient(135deg, #2c3e50, #34495e); padding: 20px; border-radius: 16px; margin-bottom: 20px; color: white; }
         .countdown-time { font-size: 40px; font-weight: 800; margin: 5px 0; }
         .prayer-list { list-style: none; padding: 0; margin: 0; text-align: left; }
         .prayer-item { display: flex; justify-content: space-between; padding: 14px; border-radius: 10px; margin-bottom: 5px; }
-        .active { background-color: #e8f5e9; color: #146c2e; font-weight: bold; border-left: 4px solid #146c2e; }
+        .active { background-color: #ecf0f1; color: #2c3e50; font-weight: bold; border-left: 4px solid #2c3e50; }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <h1 id="hijri-title">🌟 Chouwal 1447</h1>
+        <h1 id="hijri-title">✨ Dhou al-Qi'dah 1447</h1>
         <div class="location">Rabat - Salé (GMT+1)</div>
         <div id="display-date" style="font-weight: bold; margin-bottom: 15px;"></div>
         <div class="countdown-container">
@@ -30,27 +30,35 @@
 
     <script>
         const prayerData = {
-            "2026-03-29": { "h": 10, "Sobh": "05:49", "Chourouq": "07:16", "Dohr": "13:37", "Asr": "17:04", "Maghrib": "19:50", "Icha": "21:05" },
-            "2026-03-30": { "h": 11, "Sobh": "05:48", "Chourouq": "07:15", "Dohr": "13:37", "Asr": "17:04", "Maghrib": "19:50", "Icha": "21:06" },
-            "2026-03-31": { "h": 12, "Sobh": "05:46", "Chourouq": "07:13", "Dohr": "13:37", "Asr": "17:05", "Maghrib": "19:51", "Icha": "21:07" },
-            "2026-04-01": { "h": 13, "Sobh": "05:44", "Chourouq": "07:12", "Dohr": "13:36", "Asr": "17:05", "Maghrib": "19:52", "Icha": "21:08" },
-            "2026-04-02": { "h": 14, "Sobh": "05:43", "Chourouq": "07:11", "Dohr": "13:36", "Asr": "17:05", "Maghrib": "19:53", "Icha": "21:09" },
-            "2026-04-03": { "h": 15, "Sobh": "05:41", "Chourouq": "07:09", "Dohr": "13:36", "Asr": "17:05", "Maghrib": "19:53", "Icha": "21:10" },
-            "2026-04-04": { "h": 16, "Sobh": "05:40", "Chourouq": "07:08", "Dohr": "13:35", "Asr": "17:05", "Maghrib": "19:54", "Icha": "21:11" },
-            "2026-04-05": { "h": 17, "Sobh": "05:38", "Chourouq": "07:07", "Dohr": "13:35", "Asr": "17:05", "Maghrib": "19:55", "Icha": "21:12" },
-            "2026-04-06": { "h": 18, "Sobh": "05:37", "Chourouq": "07:05", "Dohr": "13:35", "Asr": "17:05", "Maghrib": "19:56", "Icha": "21:13" },
-            "2026-04-07": { "h": 19, "Sobh": "05:35", "Chourouq": "07:04", "Dohr": "13:35", "Asr": "17:06", "Maghrib": "19:57", "Icha": "21:14" },
-            "2026-04-08": { "h": 20, "Sobh": "05:34", "Chourouq": "07:03", "Dohr": "13:34", "Asr": "17:06", "Maghrib": "19:57", "Icha": "21:15" },
-            "2026-04-09": { "h": 21, "Sobh": "05:32", "Chourouq": "07:01", "Dohr": "13:34", "Asr": "17:06", "Maghrib": "19:58", "Icha": "21:16" },
-            "2026-04-10": { "h": 22, "Sobh": "05:31", "Chourouq": "07:00", "Dohr": "13:34", "Asr": "17:06", "Maghrib": "19:59", "Icha": "21:16" },
-            "2026-04-11": { "h": 23, "Sobh": "05:29", "Chourouq": "06:59", "Dohr": "13:33", "Asr": "17:06", "Maghrib": "20:00", "Icha": "21:17" },
-            "2026-04-12": { "h": 24, "Sobh": "05:28", "Chourouq": "06:57", "Dohr": "13:33", "Asr": "17:06", "Maghrib": "20:00", "Icha": "21:18" },
-            "2026-04-13": { "h": 25, "Sobh": "05:26", "Chourouq": "06:56", "Dohr": "13:33", "Asr": "17:06", "Maghrib": "20:01", "Icha": "21:19" },
-            "2026-04-14": { "h": 26, "Sobh": "05:25", "Chourouq": "06:55", "Dohr": "13:33", "Asr": "17:06", "Maghrib": "20:02", "Icha": "21:20" },
-            "2026-04-15": { "h": 27, "Sobh": "05:23", "Chourouq": "06:54", "Dohr": "13:32", "Asr": "17:06", "Maghrib": "20:03", "Icha": "21:21" },
-            "2026-04-16": { "h": 28, "Sobh": "05:22", "Chourouq": "06:52", "Dohr": "13:32", "Asr": "17:06", "Maghrib": "20:03", "Icha": "21:22" },
-            "2026-04-17": { "h": 29, "Sobh": "05:20", "Chourouq": "06:51", "Dohr": "13:32", "Asr": "17:06", "Maghrib": "20:04", "Icha": "21:23" },
-            "2026-04-18": { "h": 30, "Sobh": "05:19", "Chourouq": "06:50", "Dohr": "13:32", "Asr": "17:07", "Maghrib": "20:05", "Icha": "21:24" }
+            "2026-04-19": { "h": 1, "Sobh": "05:17", "Chourouq": "06:49", "Dohr": "13:32", "Asr": "17:07", "Maghrib": "20:06", "Icha": "21:25" },
+            "2026-04-20": { "h": 2, "Sobh": "05:16", "Chourouq": "06:48", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:07", "Icha": "21:26" },
+            "2026-04-21": { "h": 3, "Sobh": "05:14", "Chourouq": "06:46", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:07", "Icha": "21:27" },
+            "2026-04-22": { "h": 4, "Sobh": "05:13", "Chourouq": "06:45", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:08", "Icha": "21:28" },
+            "2026-04-23": { "h": 5, "Sobh": "05:11", "Chourouq": "06:44", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:09", "Icha": "21:29" },
+            "2026-04-24": { "h": 6, "Sobh": "05:10", "Chourouq": "06:43", "Dohr": "13:31", "Asr": "17:07", "Maghrib": "20:10", "Icha": "21:31" },
+            "2026-04-25": { "h": 7, "Sobh": "05:08", "Chourouq": "06:42", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:10", "Icha": "21:32" },
+            "2026-04-26": { "h": 8, "Sobh": "05:07", "Chourouq": "06:41", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:11", "Icha": "21:33" },
+            "2026-04-27": { "h": 9, "Sobh": "05:05", "Chourouq": "06:40", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:12", "Icha": "21:34" },
+            "2026-04-28": { "h": 10, "Sobh": "05:04", "Chourouq": "06:38", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:13", "Icha": "21:35" },
+            "2026-04-29": { "h": 11, "Sobh": "05:03", "Chourouq": "06:37", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:14", "Icha": "21:36" },
+            "2026-04-30": { "h": 12, "Sobh": "05:01", "Chourouq": "06:36", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:14", "Icha": "21:37" },
+            "2026-05-01": { "h": 13, "Sobh": "05:00", "Chourouq": "06:35", "Dohr": "13:30", "Asr": "17:07", "Maghrib": "20:15", "Icha": "21:38" },
+            "2026-05-02": { "h": 14, "Sobh": "04:58", "Chourouq": "06:34", "Dohr": "13:29", "Asr": "17:07", "Maghrib": "20:16", "Icha": "21:39" },
+            "2026-05-03": { "h": 15, "Sobh": "04:57", "Chourouq": "06:33", "Dohr": "13:29", "Asr": "17:07", "Maghrib": "20:17", "Icha": "21:40" },
+            "2026-05-04": { "h": 16, "Sobh": "04:56", "Chourouq": "06:32", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:17", "Icha": "21:41" },
+            "2026-05-05": { "h": 17, "Sobh": "04:54", "Chourouq": "06:31", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:18", "Icha": "21:42" },
+            "2026-05-06": { "h": 18, "Sobh": "04:53", "Chourouq": "06:30", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:19", "Icha": "21:43" },
+            "2026-05-07": { "h": 19, "Sobh": "04:52", "Chourouq": "06:30", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:20", "Icha": "21:44" },
+            "2026-05-08": { "h": 20, "Sobh": "04:51", "Chourouq": "06:29", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:21", "Icha": "21:45" },
+            "2026-05-09": { "h": 21, "Sobh": "04:49", "Chourouq": "06:28", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:21", "Icha": "21:47" },
+            "2026-05-10": { "h": 22, "Sobh": "04:48", "Chourouq": "06:27", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:22", "Icha": "21:48" },
+            "2026-05-11": { "h": 23, "Sobh": "04:47", "Chourouq": "06:26", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:23", "Icha": "21:49" },
+            "2026-05-12": { "h": 24, "Sobh": "04:46", "Chourouq": "06:25", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:24", "Icha": "21:50" },
+            "2026-05-13": { "h": 25, "Sobh": "04:45", "Chourouq": "06:24", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:24", "Icha": "21:51" },
+            "2026-05-14": { "h": 26, "Sobh": "04:44", "Chourouq": "06:24", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:25", "Icha": "21:52" },
+            "2026-05-15": { "h": 27, "Sobh": "04:42", "Chourouq": "06:23", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:26", "Icha": "21:53" },
+            "2026-05-16": { "h": 28, "Sobh": "04:41", "Chourouq": "06:22", "Dohr": "13:29", "Asr": "17:08", "Maghrib": "20:27", "Icha": "21:54" },
+            "2026-05-17": { "h": 29, "Sobh": "04:40", "Chourouq": "06:22", "Dohr": "13:29", "Asr": "17:09", "Maghrib": "20:27", "Icha": "21:55" }
         };
 
         function update() {
@@ -58,11 +66,11 @@
             const dateKey = now.toISOString().split('T')[0];
             const data = prayerData[dateKey];
             if(!data) {
-                document.getElementById('next-prayer-name').innerText = "Fin des données";
+                document.getElementById('next-prayer-name').innerText = "Vérifiez vos données";
                 return;
             }
 
-            document.getElementById('hijri-title').innerText = "🌟 " + data.h + " Chouwal 1447";
+            document.getElementById('hijri-title').innerText = "✨ " + data.h + " Dhou al-Qi'dah 1447";
             document.getElementById('display-date').innerText = now.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long'});
 
             let nextP = null, nextT = null;
